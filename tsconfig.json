@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "types": ["vite/client"],
+    "moduleResolution": "Node",
+    "strict": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+
+		"baseUrl": "./",
+    "paths": {
+			"@const": ["src/const.ts"],
+      "@utils": ["src/utils/"],
+    }
+  },
+  "include": ["src"]
+}

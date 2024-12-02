@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./style.css">
+  <title>Narkomfin house</title>
+</head>
+
+<body>
+
+  <div class="narkomfin-canvas-container">
+    <div class="narkomfin-progress-label">Loading interactive environment</div>
+  </div>
+
+  <script src="./bundle.js"></script>
+
+  <script>
+    const container = document.body.querySelector(".narkomfin-canvas-container")
+    const progressLabel = container.querySelector(".narkomfin-progress-label")
+
+    init({
+      container,
+
+      modelPath: "https://foretoo.github.io/narkomfin/public/narkomfin13.txt",
+
+      texturePath: "https://raw.githubusercontent.com/foretoo/narkomfin/main/public/",
+
+      onProgress: (type, percent) => {
+        if (type === "LOADING") {
+          progressLabel.textContent = `Loading model ${percent}%`
+        }
+        else {
+          container.removeChild(progressLabel)
+        }
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

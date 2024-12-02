@@ -1,0 +1,31 @@
+- [x] ~~base scene in a proper scale and position~~
+- [x] ~~prepare loading managment~~
+- [x] ~~switch to dark theme~~
+- [x] ~~handle model size according to view size~~
+- [x] ~~handle model's view angle according to view size~~
+- [x] ~~static render~~
+- [x] ~~pointermove minor rotation~~
+- [x] ~~ease onpointermove rotation~~
+- [x] ~~clamp pointerdown move~~
+- [x] ~~attach lighting to camera~~
+- [x] ~~depth of field~~
+- [x] ~~camera animation site surf~~
+- [x] ~~prepare progress api callback~~
+- [x] ~~smart main zoom~~
+- [ ] smart roof zoom
+- [x] ~~handle no threejs error~~
+- [x] ~~handle no webgl error~~
+- [x] ~~handle load error~~
+- [x] ~~remove encoding state~~
+- [x] ~~add textures loading to loading managment~~
+- [x] ~~add setting bg to api~~
+- [ ] handle resize more properly
+- [ ] improve camera animation to cafe on edge cases (or make it go to a circle around cafe, not one point only)
+- [ ] preload night textures
+- [ ] precompile dof
+- [ ] improve dof
+- [ ] smooth theme transition
+- [x] ~~fix loading managment (onProgress should handle loading textures and model in parallel way)~~
+- [x] ~~reduce texture sizes~~
+- [x] ~~make threejs separate chunk~~
+- [ ] change bokeh focus on zoom
