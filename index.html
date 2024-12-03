@@ -25,7 +25,7 @@
 
 
   <script type="module">
-    import * as bundle from "./bundle35.js"
+    import { init } from "./bundle35.js"
 
     const container = document.querySelector(".narkomfin-canvas-container")
     const progressLabel = container.querySelector(".narkomfin-progress-label")
@@ -47,7 +47,7 @@
         break;
     }
 
-    bundle.init({
+    init({
       container,
 
       path: "./model/",
