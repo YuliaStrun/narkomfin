@@ -3,12 +3,8 @@ import { Color, DataTexture, EquirectangularReflectionMapping, Group, Mesh, Mesh
 
 import { IFetchedData, IHouse, IHouseInnerMesh } from "./types";
 import { comGlassOpacity, glassEmissive, glassEnvIntensity, pngs } from "@const";
-import * as THREE from "three";
-import { scene } from "./setup";
 
 const material111 = new MeshStandardMaterial({ color: 0x111111 });
-
-type textureObject = { lightTexture: Texture, darkTexture: Texture };
 
 export const traverseModel = (
   data: IFetchedData,

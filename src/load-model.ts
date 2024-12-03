@@ -43,16 +43,14 @@ export const loadModel = async (
     fetchMap.set(`${path}${name}.png`, textureLoader)
     fetchMap.set(`${path}${name}_night.png`, textureLoader)
   }
-  fetchMap.set(`${path}glass_night.png`, textureLoader)
+  fetchMap.set(`${path}transparent_glass.png`, textureLoader)
   fetchMap.set(`${path}bulbs.png`, textureLoader)
   fetchMap.set(`${path}env.txt`, hdrLoader)
-  fetchMap.set(`${path}narkom14.txt`, gltfLoader)
+  fetchMap.set(`${path}model.glb`, gltfLoader)
 
   for (const [ src, loader ] of fetchMap.entries()) {
     fetches.push(new Promise((res) => void loader.load(src, res, undefined, () => rej(src))))
   }
-
-
 
   let readyToDecode = false
   let decoding = false
@@ -66,7 +64,7 @@ export const loadModel = async (
     else if (url.match(/\/draco\//)) {
       dracoLoaded++
     }
-    else if (url.match(/\.(png|txt)$/) && !decoding) {
+    else if (url.match(/\.(png|glb)$/) && !decoding) {
       n++
       onProgress(n / fetches.length)
     }
