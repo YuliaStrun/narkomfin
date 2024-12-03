@@ -14,6 +14,7 @@ export default defineConfig((params) => {
 
 
   return {
+    base: "/narkomfin/",
     publicDir: false,
 
     server: {
