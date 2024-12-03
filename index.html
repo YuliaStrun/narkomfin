@@ -25,7 +25,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
   <script type="module">
-    import { init } from "./bundle35.js"
+    import * as bundle from "./bundle37.js"
 
     const container = document.querySelector(".narkomfin-canvas-container")
     const progressLabel = container.querySelector(".narkomfin-progress-label")
@@ -47,7 +47,7 @@
         break;
     }
 
-    init({
+    bundle.init({
       container,
 
       path: "./model/",
