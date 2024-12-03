@@ -18,7 +18,7 @@ export default defineConfig((params) => {
     publicDir: false,
 
     server: {
-      open: "/src/index.html",
+      open: "/index.html",
       host: true,
     },
 
@@ -34,7 +34,7 @@ export default defineConfig((params) => {
     },
 
     plugins: [
-      bundleJsToTxt(),
+      // bundleJsToTxt(),
     ],
 
     build: {

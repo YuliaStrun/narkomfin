@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="./public/favicon.svg" />
+  <link rel="stylesheet" href="./public/style.css">
+  <title>Narkomfin house</title>
+</head>
+<body>
+
+  <div class="narkomfin-canvas-container">
+    <div class="narkomfin-progress-label">Loading interactive environment</div>
+  </div>
+
+  <button class="theme-switcher">theme</button>
+  <!-- <button class="bg-switcher">bg</button> -->
+  <button class="bookstore-tween">bookstore</button>
+  <button class="cafe-tween">cafe</button>
+  <button class="roof-tween">roof</button>
+  <button class="init-tween">init</button>
+
+  <div class="left"></div>
+  <div class="right" hide></div>
+
+
+  <script type="module">
+    import init from "./src/main.ts"
+
+    const container = document.querySelector(".narkomfin-canvas-container")
+    const progressLabel = container.querySelector(".narkomfin-progress-label")
+
+    const contentSidebar = document.querySelector(".right")
+
+    let isLight = !window.location.search.includes("dark")
+
+    let cameraType = "init"
+    switch(true) {
+      case window.location.search.includes("bookstore"):
+        cameraType = "bookstore";
+        break;
+      case window.location.search.includes("cafe"):
+        cameraType = "cafe";
+        break;
+      case window.location.search.includes("roof"):
+        cameraType = "roof";
+        break;
+    }
+
+    init({
+      container,
+
+      path: "../public/model/",
+
+      onProgress: (type, percent) => {
+        if (type === "LOADING") {
+          progressLabel.textContent = `Loading model ${percent}%`
+        }
+        else {
+          container.removeChild(progressLabel)
+        }
+      },
+
+      cameraType,
+
+      dark: !isLight,
+
+      // BG: "#E1E1DF",
+      // BG_DARK: "#1E1E1E",
+
+    })
+    .then((e) => {
+      if (e.error) {
+        const { toggleDark } = e
+        document.querySelector(".theme-switcher")?.addEventListener("click", () => {
+          toggleDark()
+        })
+        return
+      }
+
+      const { toggleDark, tweenCamera, switchBg, setCameraViewOffset } = e
+
+      document.querySelector(".theme-switcher")?.addEventListener("click", () => {
+        toggleDark()
+        isLight = !isLight
+      })
+      document.querySelector(".bookstore-tween")?.addEventListener("click", () => {
+        tweenCamera("bookstore")
+        setCameraViewOffset(true)
+        contentSidebar.toggleAttribute("hide", false)
+      })
+
+      document.querySelector(".cafe-tween")?.addEventListener("click", () => {
+        tweenCamera("cafe")
+        setCameraViewOffset(true)
+        contentSidebar.toggleAttribute("hide", false)
+        // isLight && randomBG()
+      })
+      document.querySelector(".roof-tween")?.addEventListener("click", () => {
+        tweenCamera("roof")
+        setCameraViewOffset(true)
+        contentSidebar.toggleAttribute("hide", false)
+        // isLight && randomBG()
+      })
+      document.querySelector(".init-tween")?.addEventListener("click", () => {
+        tweenCamera("init")
+        setCameraViewOffset(false)
+        contentSidebar.toggleAttribute("hide", true)
+        // isLight && switchBg("#E1E1DF")
+      })
+      const randomBG = () => {
+        switchBg(Array(6).fill().reduce((c,n)=>c+(Math.random()*16|0).toString(16),"#"))
+      }
+      // document.querySelector(".bg-switcher")?.addEventListener("click", randomBG)
+    })
+
+  </script>
+
+
+</body>
+</html>
