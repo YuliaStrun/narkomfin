@@ -3,6 +3,8 @@ import { Color, DataTexture, EquirectangularReflectionMapping, Group, Mesh, Mesh
 
 import { IFetchedData, IHouse, IHouseInnerMesh } from "./types";
 import { comGlassOpacity, glassEmissive, glassEnvIntensity, pngs } from "@const";
+import * as THREE from "three";
+import { scene } from "./setup";
 
 const material111 = new MeshStandardMaterial({ color: 0x111111 });
 
@@ -10,15 +12,16 @@ export const traverseModel = (
   data: IFetchedData,
   dark: boolean,
 ): IHouse => {
-  const model = (data.pop() as GLTF).scene
-  const envMap = data.pop() as DataTexture
+  const model = (data.find(element => (element as GLTF).scene !== undefined) as GLTF).scene;
+  const envMap = data.find(element => typeof (element as DataTexture).source?.data?.data !== "undefined") as DataTexture;
   envMap.mapping = EquirectangularReflectionMapping
+  data = data.filter(element => (<Texture>element).source?.data?.currentSrc !== undefined)
 
   const bulbsTexture = data.find(element => (<Texture>element).source.data.currentSrc.includes("bulbs")) as Texture;
   bulbsTexture.flipY = false
 
-  const glassTexture = data.find(element => (<Texture>element).source.data.currentSrc.includes("transparent_glass")) as Texture;
-  glassTexture.flipY = false
+  //const glassTexture = data.find(element => (<Texture>element).source.data.currentSrc.includes("old_glass")) as Texture;
+  //glassTexture.flipY = false
 
   const textures = Object.fromEntries(
     pngs.map(name => {
@@ -53,10 +56,13 @@ export const traverseModel = (
         roughness: 0,
         envMap: envMap,
         envMapIntensity: dark ? glassEnvIntensity[1] : glassEnvIntensity[0],
+        name: clone.name
       })
       clone.material.emissive = new Color(0xffcc88)
-      clone.material.emissiveMap = glassTexture
-      clone.material.emissiveIntensity = dark ? glassEmissive[1] : glassEmissive[0]
+      clone.material.emissiveMap = textures[clone.name].lightTexture
+      clone.userData.darkTexture = textures[clone.name].darkTexture
+      clone.material.emissiveIntensity = glassEmissive[0]
+      clone.material.needsUpdate = true
     } else if (/transparent_glass/.test(clone.name)) {
       clone.material.transparent = true
       clone.material.opacity = dark ? comGlassOpacity[1] : comGlassOpacity[0]

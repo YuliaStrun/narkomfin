@@ -25,8 +25,10 @@ export const setThemeSwitcher = (
     currTheme.dark = dark
 
     if (dark) {
-      glass.material.emissiveIntensity = glassEmissive[1]
+      glass.material.emissiveIntensity = 0
       glass.material.envMapIntensity = glassEnvIntensity[1]
+      glass.material.metalness = 0
+      glass.material.roughness = 1
 
       narkomfin.traverse((obj) => {
         obj.receiveShadow = false
@@ -47,11 +49,15 @@ export const setThemeSwitcher = (
     else {
       glass.material.emissiveIntensity = glassEmissive[0]
       glass.material.envMapIntensity = glassEnvIntensity[0]
+      glass.material.metalness = 1
+      glass.material.roughness = 0
 
       narkomfin.traverse((obj) => {
         obj.receiveShadow = true
         obj.castShadow = true
-        if (pngs.some((name) => name === obj.name)) {
+        if(/main_glass/.test(obj.name)) {
+          obj.material.map = null
+        } else if (pngs.some((name) => name === obj.name)) {
           console.log('theme1')
           obj.material.map = obj.userData.lightTexture
           console.log('theme2')

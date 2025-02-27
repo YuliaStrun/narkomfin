@@ -1,7 +1,7 @@
 {
   "name": "narkom",
   "private": true,
-  "version": "34",
+  "version": "36",
   "type": "module",
   "main": "src/main.ts",
   "homepage": "https://YuliaStrun.github.io/narkomfin",
@@ -9,8 +9,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "gh-pages -d public",
-    "predeploy": "npm run build"
+    "deploy": "gh-pages -d public"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

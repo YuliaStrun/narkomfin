@@ -14,11 +14,10 @@ export default defineConfig((params) => {
 
 
   return {
-    base: "/narkomfin/",
     publicDir: false,
 
     server: {
-      open: "/index.html",
+      open: "/src/index.html",
       host: true,
     },
 
@@ -34,7 +33,7 @@ export default defineConfig((params) => {
     },
 
     plugins: [
-      // bundleJsToTxt(),
+      bundleJsToTxt(),
     ],
 
     build: {

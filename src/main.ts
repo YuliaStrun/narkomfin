@@ -141,7 +141,7 @@ const init = async ({
       if (type === "bookstore") {
         easedPointer.updateYLimit(0.03)
         controls.minDistance = 0.7
-        controls.maxDistance = 1.15
+        controls.maxDistance = 1.25
         controls.minAzimuthAngle = -Math.PI * 0.29
         controls.maxAzimuthAngle =  Math.PI * 1.25
         controls.minPolarAngle = controls.maxPolarAngle = Math.PI * 0.49

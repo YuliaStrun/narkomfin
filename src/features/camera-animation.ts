@@ -22,8 +22,8 @@ const roofCircle = new Vector3().addVectors(roofTarget, new Vector3(0, 1, 0))
 const roofRadius = 2.2
 
 const bookstoreTarget = new Vector3(-1, -0.4, -0.8);
-const bookstoreCameraPosFront = new Vector3(-1, -0.52, 0.3);
-const bookstoreCameraPosBack = new Vector3(-1, -0.52, -1.5);
+const bookstoreCameraPosFront = new Vector3(-1, -0.52, 0.45);
+const bookstoreCameraPosBack = new Vector3(-1, -0.52, -1.7);
 
 const tweenCamera = (type: TCamAnimType) => {
   if (cameraPivot.userData.type === type || animating) return
