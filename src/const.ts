@@ -12,6 +12,8 @@ export const STATUS = {
   ERROR: "ERROR",
 }
 
+export type ThemeMode = "day" | "night" | "deep_night";
+
 export const bokehFocusMap = {
   init: [ 5, 0, 0 ], // [ bokehFocus, bokehBlur, bokehAperture ]
   bookstore: [ 3, 0.01, 0.003 ],

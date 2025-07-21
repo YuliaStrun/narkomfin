@@ -35,7 +35,7 @@ export const errorHandler = ({
   dark = false,
   BG = "#E1E1DF",
   BG_DARK = "#1E1E1E",
-}: Omit<IInitProps, "cameraType" | "content">) => {
+}: Omit<IInitProps, "cameraType" | "content" | "themeMode"> & { dark: boolean }) => {
 
   onProgress(STATUS.ERROR)
 

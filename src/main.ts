@@ -18,19 +18,19 @@ const init = async ({
   onProgress = () => {},
   cameraType = "init",
   content = false,
-  dark = false,
+  themeMode = "day",
   BG = "#E1E1DF",
   BG_DARK = "#1E1E1E",
 }: IInitProps) => {
 
   if (window.location.search === "?error") {
-    errorHandler({ container, path, onProgress, dark, BG, BG_DARK })
+    errorHandler({ container, path, onProgress, dark: themeMode !== "day", BG, BG_DARK })
     return { toggleDark: toggleDarkErrored, error: true }
   }
 
   // error from ./setup
   if (noThreeError) {
-    errorHandler({ container, path, onProgress, dark, BG, BG_DARK })
+    errorHandler({ container, path, onProgress, dark: themeMode !== "day", BG, BG_DARK })
     return { toggleDark: toggleDarkErrored, error: true }
   }
 
@@ -47,7 +47,7 @@ const init = async ({
     ( ) => onProgress(STATUS.LOADING, 85),
   )
     .then((data) => {
-      narkomfin = traverseModel(data, dark)
+      narkomfin = traverseModel(data, themeMode)
       onProgress(STATUS.DONE)
       container.appendChild(renderer.domElement)
       scene.add(narkomfin)
@@ -58,14 +58,14 @@ const init = async ({
     })
 
   if (onLoadError) {
-    errorHandler({ container, path, onProgress, dark, BG, BG_DARK })
+    errorHandler({ container, path, onProgress, dark: themeMode !== "day", BG, BG_DARK })
     return { toggleDark: toggleDarkErrored, error: true }
   }
 
 
 
-  scene.background = new Color(dark ? BG_DARK : BG)
-  renderer.shadowMap.enabled = !dark
+  scene.background = new Color(themeMode === "day" ? BG : BG_DARK)
+  renderer.shadowMap.enabled = themeMode === "day"
   setCameraPosOnInit(cameraType)
   setInitCameraViewOffset(content)
 
@@ -74,11 +74,11 @@ const init = async ({
   ////////
   //////// LIGHT & SHADOW
 
-  const ambientLight = new AmbientLight(0xbb9977, dark ? ambientLightIntensity[1] : ambientLightIntensity[0])
+  const ambientLight = new AmbientLight(0xbb9977, themeMode === "day" ? ambientLightIntensity[0] : ambientLightIntensity[1])
   ambientLight.name = "ambientLight"
   scene.add(ambientLight)
 
-  const directLight = new DirectionalLight(0xffffff, dark ? directLightIntensity[1] : directLightIntensity[0])
+  const directLight = new DirectionalLight(0xffffff, themeMode === "day" ? directLightIntensity[0] : directLightIntensity[1])
   directLight.name = "directLight"
   directLight.position.set(2, 3, 4)
   directLight.castShadow = true
@@ -96,7 +96,7 @@ const init = async ({
 
   cameraType === "init" && toggleZoomBorder(true)
 
-  bokehPass.enabled = dark
+  bokehPass.enabled = themeMode !== "day"
 
 
 
@@ -182,7 +182,7 @@ const init = async ({
 
 
 
-  const toggleDark = setThemeSwitcher(BG, BG_DARK, dark)
+  const toggleTheme = setThemeSwitcher(BG, BG_DARK, themeMode)
 
 
 
@@ -195,7 +195,7 @@ const init = async ({
 
 
 
-  return { toggleDark, tweenCamera: cameraTweener.tween, switchBg, setCameraViewOffset }
+  return { toggleTheme, tweenCamera: cameraTweener.tween, switchBg, setCameraViewOffset }
 }
 
 export default init

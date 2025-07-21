@@ -42,6 +42,9 @@ export const loadModel = async (
   for (const name of pngs) {
     fetchMap.set(`${path}${name}.png`, textureLoader)
     fetchMap.set(`${path}${name}_night.png`, textureLoader)
+    if (name === "main" || name === "floors" || name === "main_glass") {
+      fetchMap.set(`${path}${name}_deep_night.png`, textureLoader)
+    }
   }
   fetchMap.set(`${path}transparent_glass.png`, textureLoader)
   fetchMap.set(`${path}bulbs.png`, textureLoader)

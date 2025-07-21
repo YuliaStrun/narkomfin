@@ -1,7 +1,7 @@
 {
   "name": "narkom",
   "private": true,
-  "version": "36",
+  "version": "40",
   "type": "module",
   "main": "src/main.ts",
   "homepage": "https://YuliaStrun.github.io/narkomfin",

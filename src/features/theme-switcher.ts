@@ -1,17 +1,17 @@
 import { AmbientLight, Color, DirectionalLight } from "three"
 
 import type { IHouse, IHouseInnerMesh } from "../types"
-import { ambientLightIntensity, comGlassOpacity, directLightIntensity, glassEmissive, glassEnvIntensity, pngs } from "@const"
+import { ThemeMode, ambientLightIntensity, directLightIntensity, glassEmissive, glassEnvIntensity, pngs } from "@const"
 import { bokehPass, scene } from "../setup"
 
 
 
-export const currTheme = { dark: false }
+export const currTheme: { theme: ThemeMode } = { theme: "day" }
 
 export const setThemeSwitcher = (
   BG: string,
   BG_DARK: string,
-  dark: boolean,
+  themeMode: ThemeMode,
 ) => {
 
   const narkomfin = scene.getObjectByName("narkomfin") as IHouse
@@ -20,33 +20,26 @@ export const setThemeSwitcher = (
   const glass = narkomfin.getObjectByName("main_glass") as IHouseInnerMesh
   const bulbs = narkomfin.userData.bulbs
 
-  return (force?: boolean) => {
-    dark = force ?? !dark
-    currTheme.dark = dark
+  currTheme.theme = themeMode
 
-    if (dark) {
-      glass.material.emissiveIntensity = 0
-      glass.material.envMapIntensity = glassEnvIntensity[1]
-      glass.material.metalness = 0
-      glass.material.roughness = 1
+  return (force?: ThemeMode) => {
+    let newTheme: "day" | "night" | "deep_night";
 
-      narkomfin.traverse((obj) => {
-        obj.receiveShadow = false
-        obj.castShadow = false
-        if (pngs.some((name) => name === obj.name)) {
-          obj.material.map = obj.userData.darkTexture
-        }
-      })
-      narkomfin.add(bulbs)
+    if (force) {
+      newTheme = force;
+    } else {
+      const current = currTheme.theme;
 
-      ambientLight.intensity = ambientLightIntensity[1]
-      directLight.intensity = directLightIntensity[1]
-      directLight.castShadow = false
-
-      bokehPass.enabled = true
-      scene.background = new Color(BG_DARK)
+      if (current === "day") {
+        newTheme = "night";
+      } else if (current === "night") {
+        newTheme = "deep_night";
+      } else {
+        newTheme = "day";
+      }
     }
-    else {
+
+    if (newTheme === "day") {
       glass.material.emissiveIntensity = glassEmissive[0]
       glass.material.envMapIntensity = glassEnvIntensity[0]
       glass.material.metalness = 1
@@ -58,9 +51,7 @@ export const setThemeSwitcher = (
         if(/main_glass/.test(obj.name)) {
           obj.material.map = null
         } else if (pngs.some((name) => name === obj.name)) {
-          console.log('theme1')
           obj.material.map = obj.userData.lightTexture
-          console.log('theme2')
         }
       })
       narkomfin.remove(bulbs)
@@ -71,6 +62,31 @@ export const setThemeSwitcher = (
 
       bokehPass.enabled = false
       scene.background = new Color(BG)
+    } else { // night or true_night
+      glass.material.emissiveIntensity = 0
+      glass.material.envMapIntensity = glassEnvIntensity[1]
+      glass.material.metalness = 0
+      glass.material.roughness = 1
+
+      narkomfin.traverse((obj) => {
+        obj.receiveShadow = false
+        obj.castShadow = false
+        if (pngs.some((name) => name === obj.name)) {
+          if (newTheme === "deep_night" && obj.userData.trueNightTexture) {
+            obj.material.map = obj.userData.trueNightTexture
+          } else {
+            obj.material.map = obj.userData.darkTexture
+          }
+        }
+      })
+      narkomfin.add(bulbs)
+
+      ambientLight.intensity = ambientLightIntensity[1]
+      directLight.intensity = directLightIntensity[1]
+      directLight.castShadow = false
+
+      bokehPass.enabled = true
+      scene.background = new Color(BG_DARK)
     }
   }
 }

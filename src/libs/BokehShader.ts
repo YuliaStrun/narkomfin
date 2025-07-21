@@ -75,17 +75,17 @@ const BokehShader = {
 		void main() {
 
       if (maxblur < 0.001) {
-      gl_FragColor = texture2D( tColor, vUv.xy );
+        gl_FragColor = texture2D( tColor, vUv.xy );
+        return;
       }
-      else {
 
 			vec2 aspectcorrect = vec2( 1.0, aspect );
 
 			float viewZ = getViewZ( getDepth( vUv ) );
 
-			float factor = ( focus + viewZ ); // viewZ is <= 0, so this is a difference equation
+			float factor = ( focus + viewZ );
 
-			vec2 dofblur = vec2 ( clamp( factor * aperture, -maxblur, 0.0 ) );
+			vec2 dofblur = vec2 ( clamp( factor * aperture * 0.3, -maxblur * 0.3, 0.0 ) );
 
 			vec2 dofblur9 = dofblur * 0.9;
 			vec2 dofblur7 = dofblur * 0.7;
@@ -140,9 +140,6 @@ const BokehShader = {
 
 			gl_FragColor = col / 41.0;
 			gl_FragColor.a = 1.0;
-
-      }
-
 		}`,
 
 }

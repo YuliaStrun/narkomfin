@@ -1,6 +1,7 @@
 import type { BufferGeometry, DataTexture, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Sphere, Texture } from "three"
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader"
 import type { TCamAnimTransition, TCamAnimType } from "./features"
+import { ThemeMode } from "@const"
 
 
 
@@ -10,7 +11,7 @@ export interface IInitProps {
   onProgress: (type: string, progress?: number) => void
   cameraType: TCamAnimType
   content: boolean
-  dark: boolean
+  themeMode: ThemeMode
   BG: string
   BG_DARK: string
 }
@@ -29,6 +30,7 @@ export interface IHouseInnerMesh extends Mesh {
   userData: {
     lightTexture: Texture
     darkTexture: Texture
+    trueNightTexture?: Texture
   }
 }
 
