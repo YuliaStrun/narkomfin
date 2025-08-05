@@ -13,7 +13,8 @@
     <div class="narkomfin-progress-label">Loading interactive environment</div>
   </div>
 
-  <button class="theme-switcher">day</button>
+  <button class="theme-switcher">theme</button>
+  <!-- <button class="bg-switcher">bg</button> -->
   <button class="bookstore-tween">bookstore</button>
   <button class="cafe-tween">cafe</button>
   <button class="roof-tween">roof</button>
@@ -24,42 +25,51 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.149.0/three.min.js"></script>
   <script src="./bundle40.js"></script>
-  <script>
+  <script type="module">
     const container = document.querySelector(".narkomfin-canvas-container")
     const progressLabel = container.querySelector(".narkomfin-progress-label")
+
     const contentSidebar = document.querySelector(".right")
 
-    const themeOrder = ["day", "night", "deep_night"]
-    let themeIndex = 0
-
-    // Determine initial theme based on URL
-    const search = window.location.search
-    if (search.includes("night")) themeIndex = 1
-    if (search.includes("deep_night")) themeIndex = 2
-
-    document.querySelector(".theme-switcher").textContent = themeOrder[themeIndex]
+    let isLight = !window.location.search.includes("dark")
 
     let cameraType = "init"
-    if (search.includes("bookstore")) cameraType = "bookstore"
-    else if (search.includes("cafe")) cameraType = "cafe"
-    else if (search.includes("roof")) cameraType = "roof"
+    switch(true) {
+      case window.location.search.includes("bookstore"):
+        cameraType = "bookstore";
+        break;
+      case window.location.search.includes("cafe"):
+        cameraType = "cafe";
+        break;
+      case window.location.search.includes("roof"):
+        cameraType = "roof";
+        break;
+    }
 
     init({
       container,
+
       path: "./model/",
+
       onProgress: (type, percent) => {
         if (type === "LOADING") {
           progressLabel.textContent = `Loading model ${percent}%`
-        } else {
+        }
+        else {
           container.removeChild(progressLabel)
         }
       },
+
       cameraType,
-      themeMode: themeOrder[themeIndex],
+
+      dark: !isLight,
+
+      // BG: "#E1E1DF",
+      // BG_DARK: "#1E1E1E",
+
     })
     .then((e) => {
       if (e.error) {
-        // In case of an error, the old theme switcher logic might be needed
         const { toggleDark } = e
         document.querySelector(".theme-switcher")?.addEventListener("click", () => {
           toggleDark()
@@ -67,14 +77,12 @@
         return
       }
 
-      const { toggleTheme, tweenCamera, switchBg, setCameraViewOffset } = e
+      const { toggleDark, tweenCamera, switchBg, setCameraViewOffset } = e
 
       document.querySelector(".theme-switcher")?.addEventListener("click", () => {
-        themeIndex = (themeIndex + 1) % themeOrder.length
-        toggleTheme(themeOrder[themeIndex])
-        document.querySelector(".theme-switcher").textContent = themeOrder[themeIndex]
+        toggleDark()
+        isLight = !isLight
       })
-
       document.querySelector(".bookstore-tween")?.addEventListener("click", () => {
         tweenCamera("bookstore")
         setCameraViewOffset(true)
@@ -85,20 +93,28 @@
         tweenCamera("cafe")
         setCameraViewOffset(true)
         contentSidebar.toggleAttribute("hide", false)
+        // isLight && randomBG()
       })
-
       document.querySelector(".roof-tween")?.addEventListener("click", () => {
         tweenCamera("roof")
         setCameraViewOffset(true)
         contentSidebar.toggleAttribute("hide", false)
+        // isLight && randomBG()
       })
-
       document.querySelector(".init-tween")?.addEventListener("click", () => {
         tweenCamera("init")
         setCameraViewOffset(false)
         contentSidebar.toggleAttribute("hide", true)
+        // isLight && switchBg("#E1E1DF")
       })
+      const randomBG = () => {
+        switchBg(Array(6).fill().reduce((c,n)=>c+(Math.random()*16|0).toString(16),"#"))
+      }
+      // document.querySelector(".bg-switcher")?.addEventListener("click", randomBG)
     })
+
   </script>
+
+
 </body>
-</html> 
+</html>
