@@ -14,7 +14,6 @@
   </div>
 
   <button class="theme-switcher">day</button>
-  <!-- <button class="bg-switcher">bg</button> -->
   <button class="bookstore-tween">bookstore</button>
   <button class="cafe-tween">cafe</button>
   <button class="roof-tween">roof</button>
@@ -25,7 +24,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.149.0/three.min.js"></script>
   <script src="./bundle40.js"></script>
-  <script type="module">
+  <script>
+    const { init } = window.init || {};
+    
     const container = document.querySelector(".narkomfin-canvas-container")
     const progressLabel = container.querySelector(".narkomfin-progress-label")
 
@@ -65,7 +66,6 @@
       document.querySelector(".theme-switcher")?.addEventListener("click", () => {
         themeIndex = (themeIndex + 1) % themeOrder.length
         toggleTheme(themeOrder[themeIndex])
-        document.querySelector(".theme-switcher").textContent = themeOrder[themeIndex]
       })
       document.querySelector(".bookstore-tween")?.addEventListener("click", () => {
         tweenCamera("bookstore")
@@ -89,7 +89,6 @@
         contentSidebar.toggleAttribute("hide", true)
       })
     })
-
   </script>
 
 
